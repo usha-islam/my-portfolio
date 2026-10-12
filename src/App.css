@@ -231,7 +231,8 @@
 /* Only the tool strip clips overflow; identical halves form a seamless loop. */
 #skills .tool-strip { margin-bottom: 32px; min-width: 0; }
 #skills .tool-strip-viewport { overflow: hidden; border-block: 1px solid var(--border); padding-block: 22px; }
-#skills .tool-strip-track { display: flex; width: max-content; animation: tool-strip-scroll 100s linear infinite; }
+/* Twelve items again: 100s / 1.1 preserves the existing 10% faster travel speed. */
+#skills .tool-strip-track { display: flex; width: max-content; animation: tool-strip-scroll calc(100s / 1.1) linear infinite; }
 #skills .tool-strip-sequence { display: flex; flex: 0 0 auto; gap: 28px; padding: 0 28px 0 0; margin: 0; list-style: none; }
 #skills .tool-strip-item { flex: 0 0 128px; width: 128px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: var(--text); text-align: center; font-size: 14px; font-weight: 500; min-height: 108px; background: transparent; border: 0; box-shadow: none; }
 #skills .tool-strip-item:hover { color: var(--accent); }
@@ -361,3 +362,64 @@
   #projects .stlc-stage p { font-size: 13px; }
   #projects .stlc-stage:nth-child(n) .stlc-arrow { left: calc(50% - 12px); top: 100%; height: 28px; rotate: 90deg; }
 }
+
+/* Skills cards: balanced widths, natural heights and readable icon lists. */
+#skills .skill-groups { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; align-items: stretch; }
+#skills .skill-group { padding: 24px; }
+#skills .skill-group:first-child { grid-column: auto; }
+#skills .skill-group h3 { display: flex; align-items: flex-start; gap: 10px; text-transform: none; font-size: 20px; line-height: 1.4; margin-bottom: 18px; }
+#skills .skill-group h3 > svg { flex: 0 0 20px; margin-top: 4px; color: var(--accent); }
+#skills .skill-subsection + .skill-subsection { margin-top: 12px; }
+#skills .skill-subsection h4 { color: var(--text); font-size: 13px; line-height: 1.5; font-weight: 600; margin-bottom: 6px; }
+#skills .skill-context { font-size: 14px; margin: 0 0 14px; }
+#skills .skill-list { display: flex; flex-wrap: wrap; gap: 9px 8px; list-style: none; padding: 0; margin: 0; }
+#skills .skill-list li { display: flex; align-items: flex-start; gap: 8px; min-width: 0; max-width: 100%; padding: 0; color: var(--text); font-size: 14px; line-height: 1.5; }
+#skills .skill-list-chips li, #skills .skill-list-planning li { padding: 5px 7px; border: 1px solid var(--border); border-radius: 7px; }
+#skills .skill-list-planning { flex-direction: column; align-items: flex-start; }
+#skills .skill-list li > span:last-child { min-width: 0; overflow-wrap: anywhere; }
+#skills .skill-symbol { flex: 0 0 20px; width: 20px; height: 20px; margin-top: 1px; display: grid; place-items: center; color: var(--accent); background: transparent; }
+#skills .skill-symbol img, #skills .skill-symbol svg { display: block; width: 20px; height: 20px; object-fit: contain; background: transparent; }
+#skills .skill-symbol .skill-logo-dark { display: none; }
+#skills .skill-symbol-wordmark { flex-basis: 60px; width: 60px; }
+#skills .skill-symbol-wordmark img { width: 60px; }
+#skills .tool-logo-frame .skill-symbol { width: 48px; height: 48px; margin: 0; }
+#skills .tool-logo-frame .skill-symbol img, #skills .tool-logo-frame .skill-symbol svg { width: 48px; height: 48px; }
+#skills .tool-logo-frame:has(.skill-symbol-wordmark) { width: 120px; max-width: 100%; }
+#skills .tool-logo-frame .skill-symbol-wordmark, #skills .tool-logo-frame .skill-symbol-wordmark img { width: 108px; max-width: 100%; }
+#skills .tool-strip-item > span { max-width: 100%; overflow-wrap: anywhere; }
+:root[data-theme='dark'] #skills .skill-symbol .skill-logo-light { display: none; }
+:root[data-theme='dark'] #skills .skill-symbol .skill-logo-dark { display: block; }
+@media (prefers-reduced-motion: no-preference) {
+  #skills .skill-group.skill-entered { animation: skill-card-reveal 550ms ease-out var(--skill-delay, 0ms) backwards; }
+}
+@keyframes skill-card-reveal { from { opacity: .5; translate: 0 14px; } to { opacity: 1; translate: 0 0; } }
+@media (max-width: 1100px) {
+  #skills .skill-groups { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  #skills .skill-groups { grid-template-columns: minmax(0, 1fr); }
+  #skills .skill-group { padding: 24px; }
+}
+
+/* Personal Practice showcase: scoped to the independent learning projects. */
+#projects .practice-showcase { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+#projects .practice-showcase > .group-heading { grid-column: 1 / -1; margin-bottom: 0; }
+#projects .personal-practice-card { display: flex; flex-direction: column; align-items: stretch; gap: 0; padding: 0; margin: 0; min-width: 0; background: var(--surface); border-radius: 14px; transition: transform 200ms ease, border-color 200ms ease; }
+#projects .practice-card-header { display: flex; align-items: center; gap: 14px; padding: 18px 22px; background: var(--active); border-bottom: 1px solid var(--border); border-radius: 13px 13px 0 0; }
+#projects .practice-card-header img { width: 40px; height: 40px; object-fit: contain; flex-shrink: 0; }
+#projects .practice-card-header img.practice-wordmark { width: 66px; }
+#projects .practice-card-header > span { color: var(--muted); font-size: 12px; line-height: 1.5; }
+#projects .practice-category { display: block; color: var(--accent); font-weight: 600; font-size: 13px; }
+#projects .practice-card-body { display: flex; flex-direction: column; flex: 1; min-width: 0; padding: 22px; }
+#projects .practice-card-body h4 { font-size: 21px; line-height: 1.35; margin: 0; }
+#projects .practice-card-body .project-description { font-size: 15px; line-height: 1.65; margin: 12px 0 16px; }
+#projects .practice-highlights { padding: 0; margin: 0 0 24px; list-style: none; display: grid; gap: 10px; color: var(--muted); font-size: 14px; line-height: 1.5; }
+#projects .practice-highlights li { display: flex; align-items: flex-start; gap: 9px; }
+#projects .practice-highlights li::before { content: ''; flex: 0 0 5px; height: 5px; border-radius: 50%; background: var(--accent); margin-top: 8px; }
+#projects .practice-github-link { align-self: flex-start; display: inline-flex; align-items: center; gap: 7px; margin-top: auto; padding: 8px 0; color: var(--accent); font-size: 14px; font-weight: 600; text-underline-offset: 4px; border-radius: 3px; }
+#projects .practice-github-link:hover { text-decoration: underline; }
+#projects .personal-practice-card:focus-within { border-color: var(--accent); }
+#projects .practice-github-link:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+@media (max-width: 1100px) { #projects .practice-showcase { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { #projects .practice-showcase { grid-template-columns: minmax(0, 1fr); } }
+@media (prefers-reduced-motion: reduce) { #projects .personal-practice-card { transition: none; } #projects .personal-practice-card:hover { transform: none; } }

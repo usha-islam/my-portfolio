@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { profile, navigation, skills, experience, projects, certificates, designContent, qaWorkflows, qaVisuals } from './data'
+import { profile, navigation, skills, skillTools, experience, projects, certificates, designContent, qaWorkflows, qaVisuals } from './data'
 import './App.css'
 import { Articles, ArticleReader } from './Articles.jsx'
 import { articles } from './articles.js'
@@ -218,7 +218,11 @@ function ProfessionalProjectCard({ project }) {
 
 function ProjectRow({ project }) {
   if (project.category === 'Professional QA') return <ProfessionalProjectCard project={project} />
-  return <article className="project-row personal-practice-card"><div className="project-copy"><h4>{project.name}</h4><p className="project-role">{project.role}</p><p className="project-description">{project.description}</p><ul className="tags">{project.tags.map(tag => <li key={tag}>{tag}</li>)}</ul></div><ExternalLink href={project.url} className="project-link" label={`${project.action}: ${project.name} (opens in a new tab)`}>{project.action}</ExternalLink></article>
+  const tool = skillTools[project.tool]
+  return <article className="project-row personal-practice-card">
+    <div className="practice-card-header"><img src={`${import.meta.env.BASE_URL}${tool.logo.replace(/^\//, '')}`} alt={tool.label} width="48" height="40" className={tool.wordmark ? 'practice-wordmark' : undefined} /><span>Personal project<span className="practice-category">{project.category}</span></span></div>
+    <div className="practice-card-body"><h4>{project.name}</h4><p className="project-description">{project.description}</p><ul className="practice-highlights">{project.highlights.map(highlight => <li key={highlight}>{highlight}</li>)}</ul><ExternalLink href={project.url} className="practice-github-link" label={`View on GitHub: ${project.name} (opens in a new tab)`}>View on GitHub</ExternalLink></div>
+  </article>
 }
 
 function Projects() {
@@ -243,26 +247,20 @@ function Projects() {
     return () => observer?.disconnect()
   }, [])
   return <section ref={section} id="projects" className="section container selected-work reveal" tabIndex="-1"><SectionHeading number="03" title="Projects" description="Professional QA contributions and personal testing practice." />
-    {['Web Applications', 'Mobile Applications', 'Personal Practice'].map(group => <div key={group} className="project-group"><div className="group-heading"><h3>{group}</h3>{group === 'Personal Practice' && <p>Independent learning projects</p>}</div>{projects.filter(project => group === 'Personal Practice' ? project.category !== 'Professional QA' : project.group === group).map(project => <ProjectRow project={project} key={project.name} />)}</div>)}
+    {['Web Applications', 'Mobile Applications', 'Personal Practice'].map(group => <div key={group} className={`project-group${group === 'Personal Practice' ? ' practice-showcase' : ''}`}><div className="group-heading"><h3>{group}</h3>{group === 'Personal Practice' && <p>Independent learning projects</p>}</div>{projects.filter(project => group === 'Personal Practice' ? project.category !== 'Professional QA' : project.group === group).map(project => <ProjectRow project={project} key={project.name} />)}</div>)}
   </section>
 }
 
 function ToolStrip() {
-  const tools = [
-    { name: 'Playwright', logo: '/tool-logos/playwright.svg' },
-    { name: 'Postman', logo: '/tool-logos/postman.svg' },
-    { name: 'JMeter', logo: '/tool-logos/jmeter.svg' },
-    { name: 'MS Excel', logo: '/tool-logos/excel.svg', darkLogo: '/tool-logos/excel-dark.svg' },
-    { name: 'Google Workspace', logo: '/tool-logos/workspace.svg', darkLogo: '/tool-logos/workspace-dark.png' },
-  ]
+  const tools = Object.entries(skillTools).filter(([key]) => key !== 'codex').map(([, tool]) => ({ ...tool, name: tool.stripLabel || tool.label }))
   // Each identical half exceeds the widest container, including its trailing gap.
-  const sequence = Array.from({ length: 3 }, () => tools).flat()
+  const sequence = tools
   return <div className="tool-strip">
     <div id="tool-logo-strip" className="tool-strip-viewport" tabIndex="0" role="region" aria-label="Tools used: scrolling logos. Scrolling pauses while focused.">
       <div className="tool-strip-track">
         {[0, 1].map(copy => <ul key={copy} className="tool-strip-sequence" aria-hidden={copy === 1 ? true : undefined} inert={copy === 1 ? true : undefined}>
           {sequence.map((tool, index) => <li key={`${tool.name}-${index}`} className="tool-strip-item" aria-hidden={index >= tools.length ? true : undefined}>
-            <div className={`tool-logo-frame${tool.name === 'Google Workspace' ? ' tool-logo-wordmark' : ''}`} aria-hidden="true">{tool.logo && <img className={tool.darkLogo ? 'tool-logo-light' : undefined} src={tool.logo} alt="" width="48" height="48" onError={event => { event.currentTarget.hidden = true }} />}{tool.darkLogo && <img className="tool-logo-dark" src={tool.darkLogo} alt="" width="48" height="48" onError={event => { event.currentTarget.hidden = true }} />}</div>
+            <div className="tool-logo-frame"><SkillSymbol item={tool} /></div>
             <span>{tool.name}</span>
           </li>)}
         </ul>)}
@@ -271,8 +269,55 @@ function ToolStrip() {
   </div>
 }
 
+function SkillLineIcon({ name }) {
+  const paths = {
+    inspect: <><circle cx="10" cy="10" r="6" /><path d="m15 15 6 6M7 10h6m-3-3v6" /></>,
+    browser: <><rect x="3" y="4" width="18" height="16" rx="2" /><path d="M3 9h18M7 6.5h.01m3 0h.01m-3 7 3 3 6-6" /></>,
+    cycle: <><path d="M20 7a9 9 0 0 0-15-2L2 8m0-5v5h5m-3 9a9 9 0 0 0 15 2l3-3m0 5v-5h-5" /></>,
+    check: <><path d="m5 12 4 4L19 6" /><path d="M20 12v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h10" /></>,
+    api: <><rect x="2" y="7" width="7" height="10" rx="2" /><rect x="15" y="7" width="7" height="10" rx="2" /><path d="M9 12h6m-3-3 3 3-3 3" /></>,
+    devices: <><rect x="2" y="3" width="15" height="12" rx="2" /><path d="M6 20h6m-3-5v5" /><rect x="15" y="9" width="7" height="12" rx="1" /></>,
+    box: <><path d="m12 2 9 5v10l-9 5-9-5V7zm-9 5 9 5 9-5m-9 5v10" /></>,
+    plan: <><rect x="4" y="4" width="16" height="18" rx="2" /><path d="M9 2h6v4H9zm-1 9h8m-8 4h8m-8 4h5" /></>,
+    process: <><rect x="2" y="3" width="7" height="6" rx="1" /><rect x="15" y="15" width="7" height="6" rx="1" /><path d="M9 6h9v9m-4-4 4 4 4-4M5 9v9h10" /></>,
+    priority: <><path d="M5 4v16m-3-3 3 3 3-3M12 5h9m-9 5h7m-7 5h5m-5 5h3" /></>,
+    performance: <><path d="M4 19a9 9 0 1 1 16 0M12 13l5-5M4 13h2m12 0h2M12 4v2" /><circle cx="12" cy="13" r="2" /></>,
+    bug: <><rect x="7" y="7" width="10" height="13" rx="5" /><path d="M9 7V4h6v3M3 9h4m10 0h4M3 14h4m10 0h4M4 20l4-3m8 0 4 3M12 8v11" /></>,
+    capture: <><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5" /><rect x="7" y="7" width="10" height="10" rx="2" /><circle cx="12" cy="12" r="2" /></>,
+    sheet: <><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M3 9h18m-18 6h18M9 3v18m6-18v18" /></>,
+    chat: <><path d="M20 15a3 3 0 0 1-3 3H9l-5 4V6a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3zM8 8h8m-8 5h5" /></>,
+    terminal: <><rect x="2" y="4" width="20" height="16" rx="2" /><path d="m6 9 3 3-3 3m6 0h6" /></>,
+  }
+  return <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[name] || paths.inspect}</svg>
+}
+
+function SkillSymbol({ item }) {
+  const [failed, setFailed] = useState(false)
+  // A text-only tool is preferable to an unverified product mark or placeholder.
+  if ((!item.logo || failed) && !item.icon) return null
+  return <span className={`skill-symbol${item.wordmark ? ' skill-symbol-wordmark' : ''}`} aria-hidden="true">{item.logo && !failed ? <><img className={item.darkLogo ? 'skill-logo-light' : undefined} src={`${import.meta.env.BASE_URL}${item.logo.replace(/^\//, '')}`} alt="" width="20" height="20" onError={() => setFailed(true)} />{item.darkLogo && <img className="skill-logo-dark" src={`${import.meta.env.BASE_URL}${item.darkLogo.replace(/^\//, '')}`} alt="" width="20" height="20" onError={() => setFailed(true)} />}</> : <SkillLineIcon name={item.icon} />}</span>
+}
+
 function Skills() {
-  return <section id="skills" className="section container reveal" tabIndex="-1"><SectionHeading number="04" title="The Tools Behind the Care" /><ToolStrip /><div className="skill-groups">{skills.map(group => <article key={group.title} className="skill-group bento-card"><h3>{group.title}</h3><p>{group.description}</p><ul className="tags">{group.items.map(item => <li key={item}>{item}</li>)}</ul></article>)}</div></section>
+  const section = useRef(null)
+  useEffect(() => {
+    let observer
+    try {
+      if (!('IntersectionObserver' in window)) return
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+      observer = new IntersectionObserver(entries => {
+        entries.filter(entry => entry.isIntersecting).sort((a, b) => a.target.offsetTop - b.target.offsetTop).forEach((entry, index) => {
+          observer.unobserve(entry.target)
+          if (reducedMotion.matches || entry.target.classList.contains('skill-entered')) return
+          entry.target.style.setProperty('--skill-delay', `${index * 120}ms`)
+          entry.target.classList.add('skill-entered')
+        })
+      }, { rootMargin: '0px 0px -24px 0px', threshold: 0 })
+      section.current.querySelectorAll('.skill-group').forEach(card => observer.observe(card))
+    } catch { observer?.disconnect() /* Cards stay visible if animation setup fails. */ }
+    return () => observer?.disconnect()
+  }, [])
+  return <section ref={section} id="skills" className="section container reveal" tabIndex="-1"><SectionHeading number="04" title="The Tools Behind the Care" /><ToolStrip /><div className="skill-groups">{skills.map(group => <article key={group.title} className="skill-group bento-card"><h3><SkillLineIcon name={group.icon} /><span>{group.title}</span></h3>{group.description && <p className="skill-context">{group.description}</p>}{group.sections.map((subsection, index) => <div className="skill-subsection" key={subsection.title || index}>{subsection.title && <h4>{subsection.title}</h4>}{subsection.description && <p className="skill-context">{subsection.description}</p>}<ul className={`skill-list${group.listStyle ? ` skill-list-${group.listStyle}` : ''}`}>{subsection.items.map(item => <li key={item.label}><SkillSymbol item={item} /><span>{item.label}</span></li>)}</ul></div>)}</article>)}</div></section>
 }
 
 function Certificates() {

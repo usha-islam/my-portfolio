@@ -10,10 +10,42 @@ export const navigation = ['Home', 'Experience', 'Projects', 'Skills', 'Certific
 export const designContent = {
   heroHeadline: 'I help teams deliver', heroHighlight: 'reliable software.',
 }
+export const skillTools = {
+  postman: { label: 'Postman', logo: '/tool-logos/postman.svg', icon: 'api' },
+  swagger: { label: 'Swagger', logo: '/tool-logos/swagger.svg', icon: 'api' },
+  playwright: { label: 'Playwright', logo: '/tool-logos/playwright.svg', icon: 'browser' },
+  jmeter: { label: 'Apache JMeter', logo: '/tool-logos/jmeter.svg', wordmark: true, icon: 'performance' },
+  jam: { label: 'Jam', logo: '/tool-logos/jam.svg', icon: 'bug' },
+  lightshot: { label: 'Lightshot', logo: '/tool-logos/lightshot.png', icon: 'capture' },
+  excel: { label: 'Microsoft 365 (Excel)', logo: '/tool-logos/microsoft365.svg', icon: 'sheet' },
+  sheets: { label: 'Google Workspace (Google Sheets)', logo: '/tool-logos/workspace-mark.png', icon: 'sheet' },
+  jira: { label: 'Familiar with Jira Workflows', stripLabel: 'Jira', logo: '/tool-logos/jira.svg', icon: 'process' },
+  chatgpt: { label: 'ChatGPT', logo: '/tool-logos/chatgpt.svg', darkLogo: '/tool-logos/chatgpt-dark.svg' },
+  claude: { label: 'Claude', logo: '/tool-logos/claude.svg', icon: 'chat' },
+  codex: { label: 'Codex' },
+  slack: { label: 'Slack', logo: '/tool-logos/slack.svg', icon: 'chat' },
+}
 export const skills = [
-  { number: '01', title: 'Testing & Quality Assurance', description: 'My focus in day-to-day professional work.', items: ['Smoke Testing', 'Sanity Testing', 'Regression Testing', 'Integration Testing', 'Functional Testing', 'Exploratory Testing', 'Usability Testing', 'Black-box Testing', 'Test Case Design and Execution', 'Defect Reporting and Retesting', 'STLC'] },
-  { number: '02', title: 'Automation, API & Performance Testing', description: 'Tools for UI automation, API validation, and performance testing.', items: ['UI Automation with Playwright', 'API Testing with Postman', 'Performance Testing with JMeter'] },
-  { number: '03', title: 'Collaboration', description: 'Clear documentation. Thoughtful teamwork.', items: ['Test Documentation', 'Developer Collaboration', 'Agile Workflows', 'MS Excel and Google Workspace'] },
+  { title: 'Software Testing', icon: 'inspect', listStyle: 'chips', sections: [
+    { items: [['Manual', 'inspect'], ['Functional', 'browser'], ['Regression', 'cycle'], ['Smoke', 'check'], ['Sanity', 'check'], ['Exploratory', 'inspect'], ['Integration', 'api'], ['Compatibility', 'devices'], ['Black-box Testing', 'box'], ['Verification & Validation', 'check']].map(([label, icon]) => ({ label, icon })) },
+  ] },
+  { title: 'Test Planning & Design', icon: 'plan', listStyle: 'planning', sections: [
+    { items: [['Test Plans', 'plan'], ['Test Scenarios', 'process'], ['Test Case Design & Execution', 'plan'], ['Test Prioritization', 'priority']].map(([label, icon]) => ({ label, icon })) },
+  ] },
+  { title: 'API, Automation & Performance', icon: 'api', sections: [
+    { title: 'API Testing', items: [skillTools.postman, skillTools.swagger] },
+    { title: 'UI Automation', items: [{ ...skillTools.playwright, label: 'Playwright — Basic' }] },
+    { title: 'Performance Testing', items: [{ ...skillTools.jmeter, label: 'Apache JMeter — Basic' }] },
+  ] },
+  { title: 'Defect Reporting & Documentation', icon: 'bug', sections: [
+    { items: [{ label: 'Defect Reporting & Tracking', icon: 'bug' }, skillTools.jam, skillTools.lightshot, skillTools.excel, skillTools.sheets] },
+  ] },
+  { title: 'QA Process & Collaboration', icon: 'process', sections: [
+    { items: [{ label: 'STLC', icon: 'cycle' }, { label: 'SDLC', icon: 'process' }, { label: 'Agile/Scrum', icon: 'cycle' }, skillTools.jira, skillTools.slack] },
+  ] },
+  { title: 'AI-Assisted QA', icon: 'chat', description: 'For QA task support.', sections: [
+    { items: [skillTools.chatgpt, skillTools.claude, skillTools.codex] },
+  ] },
 ]
 export const experience = [
   { title: 'Software QA Engineer', company: 'TechCare Inc.', date: 'February 2026–Present', description: 'Design and execute test cases to validate functionality, identify edge cases, and assess software quality. Perform smoke, sanity, regression, and integration testing, report defects clearly, and collaborate with developers to verify fixes and support reliable releases.' },
@@ -40,9 +72,9 @@ export const projects = [
   { ...professional, name: 'Tranzo AI', group: 'Web Applications', domain: 'Fintech · Web Application', workflow: 'stlc', description: 'Contributed to quality assurance for a fintech web application within an Agile team. Designed and executed test cases, validated functionality and integration behaviour, and reported and tracked defects. Collaborated with developers to verify fixes and perform regression checks across iterations.', tags: ['Functional Testing', 'Integration Testing', 'Regression Testing', 'Bug Reporting'] },
   { ...professional, name: 'Freight & Logistics Platform', group: 'Web Applications', domain: 'Web Application', workflow: 'defect', description: 'Supported quality assurance for a freight and logistics web application through test case design, execution, and exploratory testing. Assessed application behaviour and usability, documented defects, and collaborated with developers on retesting and regression checks during Agile iterations.', tags: ['Test Case Design', 'Exploratory Testing', 'Usability Testing', 'Retesting'] },
   { ...professional, name: 'SubTranzo', group: 'Mobile Applications', domain: 'Subscription Tracker · Mobile Application', workflow: 'mobile', description: 'Contributed to quality assurance for a subscription-tracking mobile application. Validated functionality, navigation, and usability through structured test cases and exploratory testing. Reported bugs, verified fixes with developers, and performed smoke, sanity, and regression checks across iterations.', tags: ['Functional Testing', 'Smoke & Sanity Testing', 'Regression Testing', 'Usability Testing'] },
-  { name: 'Playwright Automation Practice', mark: '</>', category: 'Automation Practice', label: 'Personal practice · UI automation', role: 'Learning project', description: 'A personal SauceDemo UI automation project covering valid, invalid and locked-out login, cart actions, and checkout using Playwright, TypeScript and the Page Object Model. The repository includes test scripts, page objects and screenshots documenting test-failure investigation.', tags: ['Playwright', 'UI automation practice'], url: 'https://github.com/usha-islam/Automation_with_playwright', action: 'View Repository' },
-  { name: 'DMoney API Testing Practice', mark: '{ }', category: 'API Practice', label: 'Personal practice · API testing', role: 'Learning assignment', description: 'A personal API testing project for the DMoney demo transaction flow, using Postman and a Newman runner configured to generate an HTML report. The repository includes the runner and README links to API documentation, test cases and a bug report.', tags: ['Postman', 'API testing practice'], url: 'https://github.com/usha-islam/dmoney-assignment', action: 'View Repository' },
-  { name: 'Performance Testing Practice', mark: '↗', category: 'Performance Practice', label: 'Personal practice · Performance testing', role: 'Learning assignment', description: 'A personal JMeter project exploring load and stress testing for the Booking API, with requests for authentication, booking creation and booking search. The repository includes a JMeter test plan, a performance-testing spreadsheet and report screenshots.', tags: ['Performance testing practice'], url: 'https://github.com/usha-islam/Performance-Testing-Assignment', action: 'View Repository' },
+  { name: "UI Automation with Playwright", category: "UI automation", tool: "playwright", description: "Personal SauceDemo automation practice covering login, cart actions, and checkout.", highlights: ["Playwright, TypeScript & Page Object Model","Valid, invalid & locked-out login scenarios","Test scripts, page objects & failure screenshots"], url: "https://github.com/usha-islam/Automation_with_playwright", action: 'View on GitHub' },
+  { name: "API Testing with Postman", category: "API testing", tool: "postman", description: "A personal API testing assignment exploring the DMoney demo transaction flow.", highlights: ["Postman API documentation","Newman runner with HTML reporting","Linked test cases & bug report"], url: "https://github.com/usha-islam/dmoney-assignment", action: 'View on GitHub' },
+  { name: "Performance Testing with JMeter", category: "Performance testing", tool: "jmeter", description: "Personal load and stress testing practice for the Booking API using Apache JMeter.", highlights: ["Authentication, booking creation & search","JMeter test plan & performance spreadsheet","Aggregate & HTML report screenshots"], url: "https://github.com/usha-islam/Performance-Testing-Assignment", action: 'View on GitHub' },
 ]
 export const certificate = { title: 'Full Stack SQA & Test Automation', issuer: 'Road to SDET', date: 'December 2025', url: 'https://drive.google.com/file/d/1LHoS_hSmrlUucJT-Xu7CTOQ8pebU_yg_/view?usp=sharing' }
 export const certificates = [
