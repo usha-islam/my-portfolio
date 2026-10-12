@@ -1,33 +1,63 @@
-# Usha — Software QA Engineer Portfolio
+# Usha - Software QA Engineer Portfolio
 
-A responsive React + Vite + JavaScript portfolio. Website content is in English.
+A responsive portfolio built with React, Vite and JavaScript. Website content and project documentation are in English.
 
-## চালু করুন
+## Run locally
 
-এই ফোল্ডারে টার্মিনাল খুলে `npm.cmd run dev` চালান। টার্মিনালের Local ঠিকানাটি ব্রাউজারে খুলুন (সাধারণত http://localhost:5173/)। বন্ধ করতে Ctrl + C চাপুন।
+Open a terminal in the project folder. Install dependencies if you have not already done so:
 
-## লেখা ও লিংক পরিবর্তন
+```powershell
+npm.cmd install
+```
 
-`src/data.js` ফাইলে ব্যক্তিগত তথ্য, পরিচিতি, দক্ষতা, অভিজ্ঞতা, প্রজেক্ট, সার্টিফিকেট ও লিংক রয়েছে। `src/App.jsx` ফাইলে পেজের reusable components এবং `src/App.css` ও `src/index.css` ফাইলে ডিজাইন রয়েছে।
+Start the development server:
 
-## আসল CV যোগ করুন
+```powershell
+npm.cmd run dev
+```
 
-আসল PDF এখন `public/Usha_SQA_Resume.pdf` ফাইলে আছে। সব Download CV বোতাম `/Usha_SQA_Resume.pdf` URL ব্যবহার করে। ফাইলটির বিষয়বস্তু বদলানো হয়নি। ভবিষ্যতে একই নামে PDF বদলে পেজ রিফ্রেশ করুন; কোড বদলাতে হবে না। Download CV সরাসরি সক্রিয় লিংক; পুরোনো unavailable state সরানো হয়েছে। সাইট প্রকাশের পরে PDF বদলালে আবার build/deploy করতে হবে।
+Open the Local URL printed in the terminal, usually http://localhost:5173/. If that port is occupied, Vite chooses another port. Press Ctrl+C in the server terminal to stop it.
 
-## নিজের ছবি যোগ করুন
+On Windows PowerShell, using `npm.cmd` avoids execution-policy restrictions on `npm.ps1`. On other shells, you can use `npm` instead.
 
-`public/` ফোল্ডারে ছবি রাখুন, যেমন `usha-photo.jpg`। তারপর `src/data.js` ফাইলে `profileImage: ''` এর জায়গায় `profileImage: '/usha-photo.jpg'` লিখুন। 88px circular portrait দেখাবে। ফিল্ড খালি থাকলে ছবির জায়গা থাকবে না। ভুল image path হলে broken image দেখানো হবে না।
+## Update content and links
 
-## পরীক্ষা
+- `src/data.js`: profile information, skills, experience, projects, certificates and links.
+- `src/App.jsx`: reusable page components, navigation and section rendering.
+- `src/App.css` and `src/index.css`: layout, shared theme colours and animations.
+- `public/`: static assets, including the resume and tool logos.
 
-- `npm.cmd run build`: production build
-- `npm.cmd run lint`: code checks
-- `npm.cmd run preview`: production build স্থানীয়ভাবে দেখুন
+## Resume download
 
-বর্তমান ডিজাইন https://alishuvo.pages.dev/ সাইটের visual style অনুসরণ করে তৈরি: centered hero, restrained blue gradient, floating pill navigation ও bento cards। Let’s Connect সরাসরি LinkedIn খুলে; Contact heading ব্যবহার করা হয়েছে। আপনার নিজের SQA তথ্য, project links ও resume ব্যবহার করা হয়েছে। About-এর chat-style প্রশ্ন ও উত্তর স্থির portfolio content; কোনো AI chat বা message form নয়। ছবি খালি থাকলে portrait দেখায় না। Mobile menu, More menu, active navigation, remembered light/dark theme, email, Copy Email ও CV download রয়েছে। Reduced motion preference মানা হয়; animation setup ব্যর্থ হলেও লেখা দৃশ্যমান থাকে। নতুন dependency যোগ করা হয়নি। Google Fonts না পাওয়া গেলে system sans-serif fallback ব্যবহৃত হয়।
+The resume is stored at `public/Usha_SQA_Resume.pdf`. Download buttons use `/Usha_SQA_Resume.pdf` with the download attribute.
 
-Browser verification-এর জন্য `scripts/check-ui.mjs` রয়েছে। Headless Edge/Chrome port 9223-এ চালু এবং dev server port 5173-এ চললে `node scripts/check-ui.mjs` দিয়ে 1440px, 768px ও 390px-এ দুই theme, menu, email copy, CV download ও reduced motion পরীক্ষা করা যায়। Screenshots system temporary folder-এ থাকে। সাধারণভাবে project চালাতে এই script লাগবে না।
+To update the resume, replace the PDF using the same filename and refresh the local page. Rebuild and redeploy after replacing it on a published site. Changing the filename also requires updating the resume URL in `src/data.js`.
 
+## Static assets
+
+Place static images and other assets in `public/`. Browser URLs must omit `/public/`; for example, `public/photo-hd.jpg` is available at `/photo-hd.jpg` when the site is hosted at the root. Use Vite's base URL when supporting a deployment under a subdirectory. Tool logo sources are documented in `public/tool-logos/SOURCES.md`.
+
+## Build and checks
+
+- `npm.cmd run build`: create the production build in `dist/`.
+- `npm.cmd run lint`: run code checks.
+- `npm.cmd run preview`: serve the production build locally after building it.
+
+The portfolio uses a neutral slate-and-blue palette with light and dark themes, responsive navigation and active-section highlighting. Contact actions include email, Copy Email, WhatsApp and resume download. The hero's Let's Connect button opens LinkedIn. Professional project visuals illustrate general QA processes. Personal Practice projects retain their repository links. The About section has been removed.
+
+Animations respect reduced-motion preferences, and entrance animation setup leaves content visible if it fails. The tool strip pauses on hover or keyboard focus and becomes a static wrapping row with reduced motion. Google Fonts have system-font fallbacks.
+
+## Browser verification
+
+The `scripts/` folder contains local browser checks, including `check-ui.mjs`, `check-responsive.mjs`, `check-polish.mjs` and `check-articles.mjs`.
+
+These scripts expect a development server at `http://127.0.0.1:5173/` and an Edge or Chrome debugging browser on port `9223`. Open the portfolio in that browser before running a script, for example:
+
+```powershell
+node scripts/check-ui.mjs
+```
+
+Screenshots are saved to the system temporary folder. These scripts are optional and are not required to run the portfolio.
 
 ## QA articles
 

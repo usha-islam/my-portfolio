@@ -94,7 +94,7 @@ These priorities depend on the scenario. A profile problem that prevents users f
 
 ## Choose tests that answer the biggest questions
 
-For the coupon change, I would start with a successful eligible checkout, then check ineligible and boundary conditions. If the threshold is ৳1,000 and the system supports two decimal places, useful values are ৳999.99, ৳1,000.00 and ৳1,000.01.
+For the coupon change, I would start with a successful eligible checkout, then check ineligible and boundary conditions. If the threshold is BDT 1,000 and the system supports two decimal places, useful values are BDT 999.99, BDT 1,000.00 and BDT 1,000.01.
 
 I would also check removing the coupon, changing the cart after applying it, and completing checkout without any coupon. Those paths help reveal whether the change has affected the existing purchase flow.
 
@@ -211,7 +211,7 @@ A delivery fee may appear in the cart, checkout, payment request, order history 
 
 ## Understand where the change lives
 
-Imagine the delivery fee changes from ৳60 to ৳80 for new orders in one delivery zone. Before choosing regression tests, I would ask:
+Imagine the delivery fee changes from BDT 60 to BDT 80 for new orders in one delivery zone. Before choosing regression tests, I would ask:
 
 - Is the fee changed in configuration, shared calculation logic or one screen?
 - Which zones and delivery methods are affected?
@@ -234,7 +234,7 @@ I would use a compact impact map:
 | Invoice | Does it reflect the order’s agreed charge? |
 | Existing orders | Are historical charges preserved as required? |
 
-For a sample basket of ৳1,200 with no other charges or discounts, the new total would be ৳1,280. I would calculate that expectation independently, then compare the relevant outputs against it.
+For a sample basket of BDT 1,200 with no other charges or discounts, the new total would be BDT 1,280. I would calculate that expectation independently, then compare the relevant outputs against it.
 
 ## Cover the edges of the change
 
